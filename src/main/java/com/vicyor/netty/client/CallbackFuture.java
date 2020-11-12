@@ -10,7 +10,7 @@ import java.util.concurrent.TimeoutException;
 
 public class CallbackFuture implements Future<ResponseMsg> {
     private Object lock = new Object();
-    private ResponseMsg responseMsg;
+    private volatile ResponseMsg responseMsg;
     private RequestMsg requestMsg;
 
     public CallbackFuture(RequestMsg requestMsg) {
@@ -34,16 +34,10 @@ public class CallbackFuture implements Future<ResponseMsg> {
 
     public void set(ResponseMsg responseMsg) {
         this.responseMsg = responseMsg;
-        synchronized (lock) {
-            notifyAll();
-        }
     }
 
     public ResponseMsg get() throws InterruptedException, ExecutionException {
-        if (!isDone()) {
-            synchronized (lock) {
-                wait();
-            }
+        while (!isDone()) {
         }
 
         return responseMsg;

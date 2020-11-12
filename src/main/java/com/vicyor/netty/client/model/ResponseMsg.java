@@ -9,4 +9,9 @@ public class ResponseMsg implements Serializable {
     private Long requestId;
     // 响应内容
     private Object respContent;
+
+    public ResponseMsg(Long requestId, Object respContent) {
+        this.requestId = requestId;
+        this.respContent = respContent;
+    }
 }

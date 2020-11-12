@@ -8,4 +8,9 @@ public class RequestMsg {
     private Long  requestId;
     // 请求内容
     private Object content;
+
+    public RequestMsg(Long requestId, Object content) {
+        this.requestId = requestId;
+        this.content = content;
+    }
 }

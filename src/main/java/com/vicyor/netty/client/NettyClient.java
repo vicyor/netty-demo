@@ -12,12 +12,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
 
 public class NettyClient {
     private Bootstrap clientBootStap;
     private Map<Long, CallbackFuture> reqAndRespMap;
-    private Executor executor=Executors.newSingleThreadExecutor();
+    private Executor executor = Executors.newSingleThreadExecutor();
+
     public NettyClient() {
         clientBootStap = new Bootstrap();
         reqAndRespMap = new HashMap<Long, CallbackFuture>();
@@ -48,7 +48,9 @@ public class NettyClient {
     public void write(RequestMsg requestMsg, ProcessResponse processTask, String host, int port) {
         Channel channel = connect(host, port);
         channel.write(requestMsg);
-        reqAndRespMap.put(requestMsg.getRequestId(),new CallbackFuture(requestMsg));
+        CallbackFuture future = new CallbackFuture(requestMsg);
+        processTask.setCallbackFuture(future);
+        reqAndRespMap.put(requestMsg.getRequestId(), future);
         executor.execute(processTask);
     }
 }

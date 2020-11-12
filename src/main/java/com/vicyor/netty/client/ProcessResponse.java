@@ -5,10 +5,10 @@ import com.vicyor.netty.client.model.ResponseMsg;
 import java.util.concurrent.ExecutionException;
 
 public abstract class ProcessResponse implements Runnable {
-    private final CallbackFuture callbackFuture;
 
-    public ProcessResponse(CallbackFuture callbackFuture) {
-        this.callbackFuture = callbackFuture;
+    private CallbackFuture callbackFuture;
+    public ProcessResponse(  ) {
+
     }
     public  void run(){
         // 阻塞式get
@@ -23,4 +23,8 @@ public abstract class ProcessResponse implements Runnable {
     }
 
     protected abstract void process(ResponseMsg response);
+
+    public  void setCallbackFuture(CallbackFuture future){
+        this.callbackFuture=future;
+    }
 }
